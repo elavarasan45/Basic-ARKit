@@ -8,6 +8,7 @@
 import SwiftUI
 import RealityKit
 import ARKit
+import FocusEntity
 
 struct ContentView : View {
     @State private var isPlacementEnabled = false
@@ -51,6 +52,8 @@ struct ContentView : View {
 struct ARViewContainer: UIViewRepresentable {
     @Binding var modelConfirmedForPlacement : Model?
     
+    //var focusSquare : FocusEntity!
+    
     func makeUIView(context: Context) -> ARView {
         
         let arView = ARView(frame: .zero)
@@ -61,6 +64,11 @@ struct ARViewContainer: UIViewRepresentable {
         if ARWorldTrackingConfiguration.supportsSceneReconstruction(.mesh) {
             config.sceneReconstruction = .mesh
         }
+        
+        let focusSquare = FocusEntity(on: arView, style: .classic(color: UIColor.yellow))
+            //FocusEntity(on: arView, style: .classic(color: .yellow)
+        //focusSquare.delegate = self
+        focusSquare.setAutoUpdate(to: true)
         
         arView.session.run(config)
         
@@ -87,7 +95,11 @@ struct ARViewContainer: UIViewRepresentable {
         }
     }
     
+    
+    
 }
+
+
 
 struct ModelPickerView : View {
     @Binding var isPlacementEnabled : Bool
